@@ -1,9 +1,5 @@
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 import pprint
-
 from yattag import Doc
-
 import sheet_utils
 
 
@@ -54,13 +50,13 @@ def CheckSubmitters(sheet_name, submitter_dict):
 	# fill in submitters dict with 1 if person has submitted
 	for row in rows:
 		submitter = row['name']
-		if submitter_dict[submitter] == 0:
-			submitter_dict[submitter] = 1
+		if submitter_dict[submitter]['count'] == 0:
+			submitter_dict[submitter]['count'] = 1
 
 	# create list of submitters
 	submitted_list = []
 	for s in submitter_dict.keys():
-		if submitter_dict[s] == 1:
+		if submitter_dict[s]['count'] == 1:
 			submitted_list.append(s)
 
 	return submitted_list
