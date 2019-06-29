@@ -38,6 +38,14 @@ def IsNewsletterReady(submissions_sheet, submitter_directory):
 		if len(missing) == 0:
 			return True
 		elif len(missing) == 1:
+			# initialize service
+			mail_creds = None
+			if not os.path.exists('mail_token.pickle'):
+			  quickstart.main()
+			with open('mail_token.pickle', 'rb') as mail_token:
+			  mail_creds = pickle.load(mail_token)
+			  service_mail = build('gmail', 'v1', credentials=mail_creds)
+			  
 			# email the missing person
 			address = submitter_directory[missing[0]]['email']
 			missingSubmission = message.CreateMessage(config.SENDER,address,'Submit to the Blockmate Newsletter!', 'submit')
