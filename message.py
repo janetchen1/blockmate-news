@@ -12,17 +12,6 @@ from email.mime.text import MIMEText
 import mimetypes
 
 def SendMessage(service, user_id, message):
-  """Send an email message.
-
-  Args:
-    service: Authorized Gmail API service instance.
-    user_id: User's email address. The special value "me"
-    can be used to indicate the authenticated user.
-    message: Message to be sent.
-
-  Returns:
-    Sent Message.
-  """
   try:
     message = (service.users().messages().send(userId=user_id, body=message)
                .execute())
@@ -33,17 +22,6 @@ def SendMessage(service, user_id, message):
 
 
 def CreateMessage(sender, to, subject, message_text):
-  """Create a message for an email.
-
-  Args:
-    sender: Email address of the sender.
-    to: Email address of the receiver.
-    subject: The subject of the email message.
-    message_text: The text of the email message.
-
-  Returns:
-    An object containing a base64url encoded email object.
-  """
   message = MIMEText(message_text,'html')
   message['to'] = to
   message['from'] = sender
@@ -53,19 +31,6 @@ def CreateMessage(sender, to, subject, message_text):
 
 def CreateMessageWithAttachment(sender, to, subject, message_text, file_dir,
                                 filename):
-  """Create a message for an email.
-
-  Args:
-    sender: Email address of the sender.
-    to: Email address of the receiver.
-    subject: The subject of the email message.
-    message_text: The text of the email message.
-    file_dir: The directory containing the file to be attached.
-    filename: The name of the file to be attached.
-
-  Returns:
-    An object containing a base64url encoded email object.
-  """
   message = MIMEMultipart()
   message['to'] = to
   message['from'] = sender
