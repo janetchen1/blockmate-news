@@ -4,21 +4,8 @@ import pprint
 
 from yattag import Doc
 
-def GetSheet(sheet_name):
-	# authenticate to Google sheets
-	scope = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-	creds = ServiceAccountCredentials.from_json_keyfile_name('sheets_secret.json', scope)
-	client = gspread.authorize(creds)
+import sheet_utils
 
-	# get all records in sheet
-	sheet = client.open(sheet_name).sheet1
-
-	return sheet
-
-def GetNewMessages(sheet):
-	all_rows = sheet.get_all_records()
-
-	return all_rows
 
 def MessagesToHTML(rows):
 	# format rows into rich text email
@@ -48,21 +35,21 @@ def MessagesToHTML(rows):
 	return(doc.getvalue())
 
 def ClearOldMessages(sheet_name):
-	sheet = GetSheet(sheet_name)
-	rows = GetNewMessages(sheet)
+	sheet = sheet_utils.GetSheet(sheet_name)
+	rows = sheet_utils.GetRows(sheet)
 	num_rows = len(rows)
 	# delete rows starting from bottom
 	for i in range(num_rows + 1,1,-1):
 		sheet.delete_row(i)
 
 	# use to check that all rows deleted
-	new_rows = GetNewMessages(sheet)
+	new_rows = sheet_utils.GetRows(sheet)
 	new_num = len(new_rows)
 	return new_num
 
 def CheckSubmitters(sheet_name, submitter_dict):
-	sheet = GetSheet(sheet_name)
-	rows = GetNewMessages(sheet)
+	sheet = sheet_utils.GetSheet(sheet_name)
+	rows = sheet_utils.GetRows(sheet)
 
 	# fill in submitters dict with 1 if person has submitted
 	for row in rows:

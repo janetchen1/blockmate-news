@@ -20,14 +20,15 @@ from httplib2 import Http
 from oauth2client import file, client, tools
 from base64 import urlsafe_b64encode
 
-import quickstart
-import message
-import pullandformat as form
 import config
+import quickstart_mail
+import message
+import submission_management as sm
+import sheet_utils
 
 
 def IsNewsletterReady():
-	submitters = form.CheckSubmitters(config.SHEET_NAME, config.SUBMITTER_DIRECTORY)
+	submitters = sm.CheckSubmitters(config.SHEET_NAME, config.SUBMITTER_DIRECTORY)
 	if len(submitters) == len(config.SUBMITTER_DIRECTORY.keys()):
 		return True
 	else:
@@ -53,16 +54,16 @@ def MakeNewsletter():
 	  service_mail = build('gmail', 'v1', credentials=mail_creds)
 
 	# get new submissions, format them, and send newsletter via email
-	sheet = form.GetSheet(config.SHEET_NAME)
-	messages = form.GetNewMessages(sheet)
-	email_body = form.MessagesToHTML(messages)
+	sheet = sheet_utils.GetSheet(config.SHEET_NAME)
+	messages = sheet_utils.GetRows(sheet)
+	email_body = sm.MessagesToHTML(messages)
 	newsletterMessage = message.CreateMessage(config.SENDER,config.RECIPIENT, config.SUBJECT, email_body)
 	newsletterSend = message.SendMessage(service_mail, 'me', newsletterMessage)
 
 	# cleanup: if send successful, clear submissions spreadsheet
 	if 'SENT' in newsletterSend['labelIds']:
 		# clear submissions spreadsheet
-		clr = form.ClearOldMessages(config.SHEET_NAME)
+		clr = sm.ClearOldMessages(config.SHEET_NAME)
 		if clr != 0:
 			# if not all entries deleted, notify admin
 			notClearedError = message.CreateMessage(config.SENDER,config.ADMIN, 'Submissions not cleared', '')
