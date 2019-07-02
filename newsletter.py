@@ -67,7 +67,8 @@ def MakeNewsletter(submissions_sheet, group, test):
 	# get new submissions, format them, and send newsletter via email
 	sheet = sheet_utils.GetSheet(submissions_sheet)
 	messages = sheet_utils.GetRows(sheet)
-	email_body = sm.MessagesToHTML(messages)
+	submission_form = group['submission_form']
+	email_body = sm.MessagesToHTML(messages, submission_form)
 	
 	# generate recipient list
 	recipient_list = []

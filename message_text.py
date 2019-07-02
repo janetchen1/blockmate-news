@@ -8,3 +8,5 @@ NEWSLETTER_SUBJECT = 'Blockmate News!'
 
 NOT_SENT_ERROR_SUBJECT = 'Error: Newsletter Not Sent'
 NOT_SENT_ERROR_BODY = 'There was an error in sending your newsletter. The submissions have not been cleared from the spreadsheet and the program will try again next week.'
+
+WHERE_TO_SUBMIT = 'Don\'t forget to submit to the next newsletter at {}!'
