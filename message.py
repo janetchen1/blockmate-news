@@ -17,7 +17,7 @@ def SendMessage(service, user_id, message):
                .execute())
     print ('Message Id: %s' % message['id'])
     return message
-  except errors.HttpError, error:
+  except errors.HttpError as error:
     print ('An error occurred: %s' % error)
 
 
@@ -26,7 +26,7 @@ def CreateMessage(sender, to, subject, message_text):
   message['to'] = to
   message['from'] = sender
   message['subject'] = subject
-  return {'raw': base64.urlsafe_b64encode(message.as_string())}
+  return {'raw': base64.urlsafe_b64encode(message.as_string().encode()).decode()}
 
 
 def CreateMessageWithAttachment(sender, to, subject, message_text, file_dir,
@@ -66,4 +66,4 @@ def CreateMessageWithAttachment(sender, to, subject, message_text, file_dir,
   msg.add_header('Content-Disposition', 'attachment', filename=filename)
   message.attach(msg)
 
-  return {'raw': base64.urlsafe_b64encode(message.as_string())}
+  return {'raw': base64.urlsafe_b64encode(message.as_string().encode()).decode()}

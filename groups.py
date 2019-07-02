@@ -24,6 +24,7 @@ def MakeGroupDict(g_sheet, u_sheet):
 		gid = group['group_id']
 		group_directory[gid] = {}
 		group_directory[gid]['sp_name'] = group['spreadsheet_name']
+		group_directory[gid]['submission_form'] = group['submission_form']
 		group_directory[gid]['admin_email'] = group['admin']
 		group_directory[gid]['submitter_directory'] = {}
 		name_list = group['name_list'].split(', ')
