@@ -104,6 +104,6 @@ def main():
 		submission_form = group_directory[group]['submission_form']
 		ready = IsNewsletterReady(submission_sheet, submitter_directory, submission_form)
 		if ready:
-			MakeNewsletter(submission_sheet, group_directory[group], True)
+			MakeNewsletter(submission_sheet, group_directory[group], False)
 
 main()
