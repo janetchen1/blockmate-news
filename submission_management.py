@@ -1,9 +1,10 @@
 import pprint
 from yattag import Doc
 import sheet_utils
+import message_text
 
 
-def MessagesToHTML(rows):
+def MessagesToHTML(rows, submission_form):
 	# format rows into rich text email
 	doc, tag, text = Doc().tagtext()
 	with tag('html'):
@@ -28,6 +29,9 @@ def MessagesToHTML(rows):
 					url = photo.replace('open?','uc?export=view&',1)
 					with tag('div', id='photo-container'):
 						doc.stag('img', src=url, width=300)
+			with tag('p', id='submit_again'):
+				reminder = message_text.WHERE_TO_SUBMIT.format(submission_form)
+				text(reminder)
 	return(doc.getvalue())
 
 def ClearOldMessages(sheet_name):
