@@ -1,0 +1,28 @@
+name: Run newsletter
+
+on:
+  schedule:
+    - cron:  '0 8 * * 0'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run newsletter
+      env:
+        SENDER: ${{ secrets.SENDER }}
+        TEST_RECIPIENT: ${{ secrets.TEST_RECIPIENT }}
+        USERS_SPREADSHEET: ${{ secrets.USERS_SPREADSHEET }}
+        GROUPS_SPREADSHEET: ${{ secrets.GROUPS_SPREADSHEET }}
+      run: python newsletter.py
