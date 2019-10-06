@@ -1,4 +1,4 @@
-name: Run newsletter
+name: run newsletter
 
 on:
   schedule:
