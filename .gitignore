@@ -1,3 +1,4 @@
-*.json
+sheets_secret.json
+credentials.json
 *.pickle
 *.pyc
